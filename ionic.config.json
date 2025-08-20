@@ -3,5 +3,6 @@
   "integrations": {
     "capacitor": {}
   },
-  "type": "angular"
+  "type": "angular",
+  "proxy": [{ "path": "/graphql", "proxyUrl": "http://localhost:5008/graphql" }]
 }

@@ -1,0 +1,12 @@
+[
+  {
+    "icon": "add-circle-outline",
+    "name": "Asuntos Relevantes",
+    "redirectTo": "/reportar-evento"
+  },
+  {
+    "icon": "timer-outline",
+    "name": "Perfil",
+    "redirectTo": "/historico-hallazgo"
+  }
+]

@@ -1,0 +1,488 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button color="light"></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="header-title">Asuntos Relevantes</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="recargarDatos()" color="light">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="app-content">
+<!-- <ion-content class="main-content"> -->
+  <!-- Refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="recargarDatos($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Arrastra para actualizar"
+      refreshingSpinner="circular"
+      refreshingText="Actualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Tabs principales -->
+  <ion-segment [(ngModel)]="selectedTab" (ionChange)="onTabChange($event)" class="main-tabs">
+    <ion-segment-button value="lista">
+      <ion-label>Lista</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="dashboard">
+      <ion-label>Resumen</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Estado de carga -->
+  <div *ngIf="cargando && asuntosRelevantes.length === 0" class="loading-state">
+    <div class="loading-container">
+      <ion-spinner name="circular" color="primary"></ion-spinner>
+      <p>Cargando asuntos relevantes...</p>
+    </div>
+  </div>
+
+  <!-- Estado de error -->
+  <div *ngIf="error && asuntosRelevantes.length === 0" class="error-state">
+    <ion-icon name="alert-circle-outline" color="danger" size="large"></ion-icon>
+    <h3>Error al cargar datos</h3>
+    <p>{{ error }}</p>
+    <ion-button (click)="recargarDatos()" color="primary" fill="outline">
+      <ion-icon name="refresh-outline" slot="start"></ion-icon>
+      Reintentar
+    </ion-button>
+  </div>
+
+  <!-- Contenido scrolleable -->
+  <div class="scrollable-content" [ngSwitch]="selectedTab" *ngIf="!cargando || asuntosRelevantes.length > 0">
+
+    <!-- TAB LISTA (mantienes el código existente) -->
+    <div *ngSwitchCase="'lista'" class="tab-content">
+      <!-- Filtros -->
+      <div class="filtros-container">
+        <ion-row>
+          <ion-col size="6">
+            <ion-select
+              [(ngModel)]="filtroEstado"
+              (ionChange)="aplicarFiltros()"
+              placeholder="Estado"
+              interface="action-sheet"
+              class="filtro-select">
+              <ion-select-option value="">Todos los Estados</ion-select-option>
+              <ion-select-option *ngFor="let estado of estados" [value]="estado">
+                {{estado}}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col size="6">
+            <ion-select
+              [(ngModel)]="filtroSemaforo"
+              (ionChange)="aplicarFiltros()"
+              placeholder="Semáforo"
+              interface="action-sheet"
+              class="filtro-select">
+              <ion-select-option value="">Todos los Semáforos</ion-select-option>
+              <ion-select-option value="verde">Verde</ion-select-option>
+              <ion-select-option value="amarillo">Amarillo</ion-select-option>
+              <ion-select-option value="rojo">Rojo</ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="9">
+            <ion-select
+              [(ngModel)]="filtroCategoria"
+              (ionChange)="aplicarFiltros()"
+              placeholder="Categoría"
+              interface="action-sheet"
+              class="filtro-select">
+              <ion-select-option value="">Todas las Categorías</ion-select-option>
+              <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">
+                {{categoria}}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col size="3">
+            <ion-button
+              (click)="limpiarFiltros()"
+              fill="clear"
+              color="medium"
+              size="small"
+              class="limpiar-filtros-btn">
+              <ion-icon name="close-circle-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <!-- Barra de búsqueda -->
+      <ion-searchbar
+        [(ngModel)]="searchTerm"
+        (ionInput)="buscarEnTiempoReal($event)"
+        (ionClear)="limpiarBusqueda()"
+        placeholder="Buscar por título o descripción..."
+        class="search-bar"
+        showClearButton="focus"
+        debounce="300">
+      </ion-searchbar>
+
+      <div class="search-info" *ngIf="searchTerm && searchTerm.trim().length > 0">
+        <ion-chip color="primary" outline (click)="limpiarBusqueda()" onkeypress="">
+          <ion-icon name="search-outline"></ion-icon>
+          <ion-label>Buscando: "{{ searchTerm }}"</ion-label>
+          <ion-icon name="close-circle"></ion-icon>
+        </ion-chip>
+      </div>
+
+      <!-- Contador de resultados -->
+      <div class="resultados-contador" *ngIf="asuntosRelevantes.length > 0">
+        <p>
+          Mostrando {{ asuntosFiltrados.length }} de {{ asuntosRelevantes.length }} asuntos
+          <span *ngIf="filtroEstado || filtroSemaforo || filtroCategoria || searchTerm">(filtrados)</span>
+        </p>
+      </div>
+
+      <!-- Lista de asuntos -->
+      <div class="asuntos-list">
+        <ion-card
+          *ngFor="let asunto of asuntosFiltrados; trackBy: trackByAsunto"
+          class="asunto-card"
+          [attr.data-id]="asunto.id"
+          [attr.data-titulo]="asunto.titulo"
+          button="true">
+
+          <!-- 🔧 SEPARAR el contenido clickeable del evento de clic -->
+          <ion-card-content (click)="verDetalleAsunto(asunto, $event)">
+            <div class="asunto-header">
+              <h2 class="asunto-titulo">{{asunto.titulo}}</h2>
+              <div class="semaforo-indicator" [ngClass]="'semaforo-' + asunto.semaforo">
+                <div class="semaforo-dot"></div>
+              </div>
+            </div>
+
+            <div class="asunto-meta">
+              <span class="categoria">{{asunto.categoria}}</span>
+              <span class="divider">|</span>
+              <span class="nivel">{{asunto.nivelEducativo}}</span>
+            </div>
+
+            <p class="asunto-descripcion">{{asunto.descripcion}}</p>
+
+            <div class="asunto-footer">
+              <div class="asunto-location">
+                <ion-icon name="location-outline"></ion-icon>
+                <span>{{asunto.estado}}, {{asunto.localidad}}</span>
+              </div>
+              <div class="asunto-date">
+                <ion-icon name="calendar-outline"></ion-icon>
+                <span *ngIf="asunto.fechaEvento; else fechaPlaceholder">
+                  {{formatearFecha(asunto.fechaEvento)}}
+                </span>
+                <ng-template #fechaPlaceholder>
+                  <span class="fecha-no-disponible">Fecha no disponible</span>
+                </ng-template>
+              </div>
+            </div>
+
+            <!-- Badges de estado -->
+            <div class="asunto-badges">
+              <ion-chip
+                *ngIf="asunto.destacado"
+                color="warning"
+                outline>
+                <ion-icon name="star-outline"></ion-icon>
+                <ion-label>Destacado</ion-label>
+              </ion-chip>
+
+              <ion-chip
+                *ngIf="asunto.resuelto"
+                color="success"
+                outline>
+                <ion-icon name="checkmark-circle-outline"></ion-icon>
+                <ion-label>Resuelto</ion-label>
+              </ion-chip>
+
+              <ion-chip
+                *ngIf="tieneConcentradoPrensa(asunto)"
+                color="tertiary"
+                outline>
+                <ion-icon name="newspaper-outline"></ion-icon>
+                <ion-label>En Prensa</ion-label>
+              </ion-chip>
+            </div>
+
+            <!-- Indicador de que es clickeable -->
+            <div class="card-action-indicator">
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+            </div>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Mensaje cuando no hay resultados -->
+        <div *ngIf="asuntosFiltrados.length === 0 && !cargando" class="no-results">
+          <ion-icon name="search-outline" size="large"></ion-icon>
+          <p *ngIf="asuntosRelevantes.length === 0">No hay asuntos relevantes disponibles</p>
+          <p *ngIf="asuntosRelevantes.length > 0 && !searchTerm">No se encontraron asuntos con los filtros aplicados</p>
+          <p *ngIf="asuntosRelevantes.length > 0 && searchTerm">No se encontraron resultados para "{{ searchTerm }}"</p>
+
+          <ion-button
+            *ngIf="filtroEstado || filtroSemaforo || filtroCategoria || searchTerm"
+            (click)="limpiarFiltros()"
+            fill="outline"
+            color="primary"
+            size="small">
+            <ion-icon name="refresh-outline" slot="start"></ion-icon>
+            Limpiar filtros
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB DASHBOARD -->
+    <div *ngSwitchCase="'dashboard'" class="tab-content dashboard-content">
+
+      <!-- Filtros del Dashboard -->
+      <!-- <div class="dashboard-filters">
+        <ion-row>
+          <ion-col size="12">
+            <ion-select
+              [(ngModel)]="dashboardFilter"
+              (ionChange)="actualizarDashboard()"
+              placeholder="Filtrar dashboard"
+              interface="action-sheet"
+              class="dashboard-filter-select">
+              <ion-select-option value="todos">Todos los asuntos</ion-select-option>
+              <ion-select-option value="criticos">Solo críticos (Rojos)</ion-select-option>
+              <ion-select-option value="pendientes">Solo pendientes</ion-select-option>
+              <ion-select-option value="destacados">Solo destacados</ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      </div> -->
+
+      <!-- KPIs Principales -->
+      <div class="kpis-container">
+        <ion-row>
+          <ion-col size="6" size-md="3">
+            <div class="kpi-card total">
+              <div class="kpi-icon">
+                <ion-icon name="documents-outline"></ion-icon>
+              </div>
+              <div class="kpi-content">
+                <div class="kpi-number">{{ dashboardData.totalAsuntos }}</div>
+                <div class="kpi-label">Total Asuntos</div>
+              </div>
+            </div>
+          </ion-col>
+
+          <ion-col size="6" size-md="3">
+            <div class="kpi-card criticos">
+              <div class="kpi-icon">
+                <ion-icon name="warning-outline"></ion-icon>
+              </div>
+              <div class="kpi-content">
+                <div class="kpi-number">{{ dashboardData.asuntosCriticos }}</div>
+                <div class="kpi-label">Críticos</div>
+              </div>
+            </div>
+          </ion-col>
+
+          <ion-col size="6" size-md="3">
+            <div class="kpi-card resueltos">
+              <div class="kpi-icon">
+                <ion-icon name="checkmark-circle-outline"></ion-icon>
+              </div>
+              <div class="kpi-content">
+                <div class="kpi-number">{{ dashboardData.asuntosResueltos }}</div>
+                <div class="kpi-label">Resueltos</div>
+                <div class="kpi-percentage">{{ dashboardData.porcentajeResueltos }}%</div>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <!-- Gráficos Principales -->
+      <div class="charts-container">
+
+        <!-- Gráfico de Semáforo -->
+        <ion-card class="chart-card">
+          <ion-card-header>
+            <ion-card-title>
+              <ion-icon name="analytics-outline"></ion-icon>
+              Distribución por Semáforo
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="chart-wrapper" *ngIf="dashboardData.datosSemaforo.length > 0">
+              <!-- Usando Recharts para el gráfico de dona -->
+              <div class="pie-chart-container">
+                <div class="semaforo-stats">
+                  <div
+                    *ngFor="let item of dashboardData.datosSemaforo"
+                    class="semaforo-stat-item"
+                    [ngClass]="'stat-' + item.name">
+                    <div class="stat-color" [ngClass]="'color-' + item.name"></div>
+                    <div class="stat-info">
+                      <!-- 🔧 REEMPLAZAR titlecase pipe con método del componente -->
+                      <span class="stat-label">{{ formatearNombreSemaforo(item.name) }}</span>
+                      <span class="stat-value">{{ item.value }} ({{ item.percentage }}%)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="dashboardData.datosSemaforo.length === 0" class="no-data">
+              <p>No hay datos para mostrar</p>
+            </div>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Gráfico de Estados -->
+        <!-- <ion-card class="chart-card">
+          <ion-card-header>
+            <ion-card-title>
+              <ion-icon name="location-outline"></ion-icon>
+              Top 5 Estados con Más Asuntos
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="chart-wrapper" *ngIf="dashboardData.topEstados.length > 0">
+              <div class="bar-chart-simple">
+                <div
+                  *ngFor="let estado of dashboardData.topEstados; let i = index"
+                  class="bar-item">
+                  <div
+                    class="bar-visual"
+                    [style.height.px]="calcularAlturaBarraEstado(estado.cantidad, i)"
+                    [style.animation-delay.s]="i * 0.2"></div>
+                  <div class="bar-label">
+                    {{ truncarNombreEstado(estado.nombre) }}
+                  </div>
+                  <div class="bar-value">{{ estado.cantidad }}</div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="dashboardData.topEstados.length === 0" class="no-data">
+              <p>No hay datos para mostrar</p>
+            </div>
+          </ion-card-content>
+        </ion-card> -->
+
+        <!-- Gráfico de Categorías -->
+        <ion-card class="chart-card">
+          <ion-card-header>
+            <ion-card-title>
+              <ion-icon name="folder-outline"></ion-icon>
+              Asuntos por Categoría
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="chart-wrapper" *ngIf="dashboardData.datosCategorias.length > 0">
+              <div class="horizontal-bar-chart">
+                <div
+                  *ngFor="let categoria of dashboardData.datosCategorias; let i = index"
+                  class="h-bar-item">
+                  <div class="h-bar-label">{{ categoria.nombre }}</div>
+                  <div class="h-bar-container">
+                    <!-- 🔧 SOLUCIONADO: Ancho calculado directamente -->
+                    <div
+                      class="h-bar-visual"
+                      [style.width.%]="calcularAnchoBarraCategoria(categoria.cantidad)"
+                      [style.animation-delay.s]="i * 0.2"></div>
+                    <div class="h-bar-value">{{ categoria.cantidad }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="dashboardData.datosCategorias.length === 0" class="no-data">
+              <p>No hay datos para mostrar</p>
+            </div>
+          </ion-card-content>
+        </ion-card>
+
+      </div>
+
+      <!-- Rankings y Listas -->
+      <div class="rankings-container">
+        <ion-row>
+
+          <!-- Estados Críticos -->
+          <!-- <ion-col size="12" size-md="6">
+            <ion-card class="ranking-card critical">
+              <ion-card-header>
+                <ion-card-title>
+                  <ion-icon name="alert-circle-outline"></ion-icon>
+                  Estados Más Críticos
+                </ion-card-title>
+                <ion-card-subtitle>Estados con más asuntos rojos</ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content>
+                <div class="ranking-list" *ngIf="dashboardData.estadosCriticos.length > 0">
+                  <div
+                    *ngFor="let estado of dashboardData.estadosCriticos; let i = index"
+                    class="ranking-item critical-item">
+                    <div class="ranking-position">{{ i + 1 }}</div>
+                    <div class="ranking-info">
+                      <div class="ranking-name">{{ estado.nombre }}</div>
+                      <div class="ranking-detail">{{ estado.asuntosRojos }} asuntos críticos</div>
+                    </div>
+                    <div class="ranking-indicator critical-indicator">{{ estado.asuntosRojos }}</div>
+                  </div>
+                </div>
+                <div *ngIf="dashboardData.estadosCriticos.length === 0" class="no-data">
+                  <p>No hay asuntos críticos registrados</p>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col> -->
+
+          <!-- Mejor Gestión -->
+          <ion-col size="12" size-md="6">
+            <ion-card class="ranking-card success">
+              <ion-card-header>
+                <ion-card-title>
+                  <ion-icon name="trophy-outline"></ion-icon>
+                  Mejor Gestión
+                </ion-card-title>
+                <ion-card-subtitle>Estados con más asuntos resueltos</ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content>
+                <div class="ranking-list" *ngIf="dashboardData.mejorGestion.length > 0">
+                  <div
+                    *ngFor="let estado of dashboardData.mejorGestion; let i = index"
+                    class="ranking-item success-item">
+                    <div class="ranking-position">{{ i + 1 }}</div>
+                    <div class="ranking-info">
+                      <div class="ranking-name">{{ estado.nombre }}</div>
+                      <div class="ranking-detail">{{ estado.porcentajeResueltos }}% resueltos</div>
+                    </div>
+                    <div class="ranking-indicator success-indicator">{{ estado.asuntosResueltos }}</div>
+                  </div>
+                </div>
+                <div *ngIf="dashboardData.mejorGestion.length === 0" class="no-data">
+                  <p>No hay datos de gestión disponibles</p>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+
+        </ion-row>
+      </div>
+
+      <!-- Última actualización -->
+      <div class="dashboard-footer">
+        <ion-item lines="none" class="update-info">
+          <ion-icon name="time-outline" slot="start"></ion-icon>
+          <ion-label>
+            <p>Última actualización: {{ obtenerFechaActualizacion() }}</p>
+          </ion-label>
+          <ion-button (click)="recargarDatos()" fill="clear" slot="end">
+            <ion-icon name="refresh-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </div>
+
+    </div>
+  </div>
+</ion-content>

@@ -1,37 +1,1026 @@
 /*
- * App Global CSS
+ * App Global CSS - Sistema de Diseño Unificado
  * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
+ * Sistema centralizado de variables, colores y estilos base
  */
 
 /* Core CSS required for Ionic components to work properly */
-@import "@ionic/angular/css/core.css";
+@import "~@ionic/angular/css/core.css";
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/display.css";
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
 
-/* Basic CSS for apps built with Ionic */
-@import "@ionic/angular/css/normalize.css";
-@import "@ionic/angular/css/structure.css";
-@import "@ionic/angular/css/typography.css";
-@import "@ionic/angular/css/display.css";
+// /* ========================================
+//    SISTEMA DE VARIABLES CENTRALIZADO
+//    ======================================== */
+// :root {
+//   /* Colores Principales */
+//   --color-primary: #691C32;
+//   --color-secondary: #BC955C;
+//   --color-primary-light: #8B2A47;
+//   --color-secondary-light: #D4B177;
+//   --color-primary-dark: #4A131F;
+//   --color-secondary-dark: #9A7940;
 
-/* Optional CSS utils that can be commented out */
-@import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
+//   /* Colores de Texto */
+//   --color-text-dark: #2d3748;
+//   --color-text-medium: #4a5568;
+//   --color-text-light: #718096;
+//   --color-text-muted: #94a3b8;
+//   --color-text-disabled: #cbd5e1;
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+//   /* Colores de Fondo */
+//   --color-bg-primary: #ffffff;
+//   --color-bg-secondary: #f8f9fa;
+//   --color-bg-light: #f7fafc;
+//   --color-bg-muted: #e2e8f0;
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+//   /* Colores de Estado */
+//   --color-success: #22c55e;
+//   --color-warning: #fbbf24;
+//   --color-danger: #ef4444;
+//   --color-info: #3b82f6;
+
+//   /* Espaciado */
+//   --spacing-xs: 4px;
+//   --spacing-sm: 8px;
+//   --spacing-md: 16px;
+//   --spacing-lg: 24px;
+//   --spacing-xl: 32px;
+//   --spacing-2xl: 40px;
+
+//   /* Border Radius */
+//   --border-radius-sm: 8px;
+//   --border-radius-md: 12px;
+//   --border-radius-lg: 16px;
+//   --border-radius-xl: 20px;
+//   --border-radius-full: 50px;
+
+//   /* Shadows */
+//   --shadow-xs: 0 1px 3px rgba(105, 28, 50, 0.05);
+//   --shadow-sm: 0 2px 8px rgba(105, 28, 50, 0.08);
+//   --shadow-md: 0 4px 15px rgba(105, 28, 50, 0.12);
+//   --shadow-lg: 0 6px 20px rgba(105, 28, 50, 0.15);
+//   --shadow-xl: 0 8px 25px rgba(105, 28, 50, 0.20);
+
+//   /* Typography */
+//   --font-size-xs: 12px;
+//   --font-size-sm: 14px;
+//   --font-size-md: 16px;
+//   --font-size-lg: 18px;
+//   --font-size-xl: 20px;
+//   --font-size-2xl: 24px;
+//   --font-size-3xl: 28px;
+
+//   --font-weight-normal: 400;
+//   --font-weight-medium: 500;
+//   --font-weight-semibold: 600;
+//   --font-weight-bold: 700;
+
+//   /* Layout */
+//   --header-height: 56px;
+//   --footer-height: 70px;
+//   --container-max-width: 1200px;
+
+//   /* Transitions */
+//   --transition-fast: 0.15s ease;
+//   --transition-normal: 0.3s ease;
+//   --transition-slow: 0.5s ease;
+
+//   /* ========================================
+//    VARIABLES ESPECÍFICAS PARA DASHBOARD
+//    ======================================== */
+
+//   /* Variables dinámicas para gráficos (actualizadas desde TypeScript) */
+//   --height-1: 120px;
+//   --height-2: 100px;
+//   --height-3: 80px;
+//   --height-4: 60px;
+//   --height-5: 40px;
+//   --width-1: 100%;
+//   --width-2: 80%;
+//   --width-3: 60%;
+//   --width-4: 40%;
+//   --width-5: 20%;
+
+//   /* Colores de semáforo para dashboard */
+//   --semaforo-verde: #22c55e;
+//   --semaforo-amarillo: #fbbf24;
+//   --semaforo-rojo: #ef4444;
+
+//   /* Gradientes para KPIs */
+//   --gradient-total: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+//   --gradient-criticos: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+//   --gradient-resueltos: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+//   --gradient-destacados: linear-gradient(135deg, #ffd93d 0%, #ff9f43 100%);
+
+//   /* Tamaños específicos dashboard */
+//   --dashboard-card-padding: 20px;
+//   --dashboard-gap: 16px;
+//   --kpi-icon-size: 2.5rem;
+//   --chart-height: 200px;
+// }
+
+// /* ========================================
+//    FORZAR TEMA CLARO GLOBALMENTE
+//    ======================================== */
+// body {
+//   --ion-background-color: var(--color-bg-primary) !important;
+//   --ion-text-color: var(--color-text-dark) !important;
+
+//   // Forzar colores de pasos para tema claro
+//   --ion-color-step-50: #f9fafb !important;
+//   --ion-color-step-100: #f3f4f6 !important;
+//   --ion-color-step-150: #e5e7eb !important;
+//   --ion-color-step-200: #d1d5db !important;
+//   --ion-color-step-250: #9ca3af !important;
+//   --ion-color-step-300: #6b7280 !important;
+//   --ion-color-step-350: #4b5563 !important;
+//   --ion-color-step-400: #374151 !important;
+//   --ion-color-step-450: #1f2937 !important;
+//   --ion-color-step-500: #111827 !important;
+//   --ion-color-step-550: #0f172a !important;
+//   --ion-color-step-600: #0f172a !important;
+//   --ion-color-step-650: #0f172a !important;
+//   --ion-color-step-700: #0f172a !important;
+//   --ion-color-step-750: #0f172a !important;
+//   --ion-color-step-800: #0f172a !important;
+//   --ion-color-step-850: #0f172a !important;
+//   --ion-color-step-900: #0f172a !important;
+//   --ion-color-step-950: #0f172a !important;
+
+//   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+// }
+
+// /* ========================================
+//    COMPONENTES BASE IONIC
+//    ======================================== */
+
+// /* Content */
+// ion-content {
+//   --background: var(--color-bg-primary) !important;
+//   --color: var(--color-text-dark) !important;
+// }
+
+// /* Cards */
+// ion-card {
+//   --background: var(--color-bg-primary) !important;
+//   --color: var(--color-text-dark) !important;
+//   border-radius: var(--border-radius-md);
+//   box-shadow: var(--shadow-sm);
+//   margin: var(--spacing-md);
+//   border: none;
+
+//   ion-card-header {
+//     padding: var(--spacing-lg);
+
+//     ion-card-title {
+//       color: var(--color-text-dark);
+//       font-weight: var(--font-weight-semibold);
+//       font-size: var(--font-size-lg);
+//     }
+
+//     ion-card-subtitle {
+//       color: var(--color-text-medium);
+//       font-size: var(--font-size-sm);
+//     }
+//   }
+
+//   ion-card-content {
+//     padding: var(--spacing-lg);
+//     color: var(--color-text-dark);
+//     line-height: 1.5;
+//   }
+// }
+
+// /* Lists */
+// ion-list {
+//   --background: var(--color-bg-primary) !important;
+//   background: transparent;
+// }
+
+// /* Items */
+// ion-item {
+//   --background: transparent !important;
+//   --color: var(--color-text-dark) !important;
+//   --border-color: var(--color-bg-muted);
+//   border-radius: var(--border-radius-md);
+//   margin-bottom: var(--spacing-sm);
+
+//   ion-label {
+//     color: var(--color-text-dark) !important;
+//     white-space: normal !important;
+//   }
+
+//   &:hover {
+//     --background: var(--color-bg-light) !important;
+//   }
+// }
+
+// /* Buttons */
+// ion-button {
+//   --border-radius: var(--border-radius-md);
+//   font-weight: var(--font-weight-semibold);
+//   transition: all var(--transition-normal);
+
+//   &[color="primary"] {
+//     --background: var(--color-primary);
+//     --background-hover: var(--color-primary-light);
+//     --color: white;
+//     --box-shadow: var(--shadow-md);
+
+//     &:hover {
+//       transform: translateY(-1px);
+//       --box-shadow: var(--shadow-lg);
+//     }
+//   }
+
+//   &[color="secondary"] {
+//     --background: var(--color-secondary);
+//     --background-hover: var(--color-secondary-light);
+//     --color: white;
+//   }
+
+//   &[fill="outline"] {
+//     --border-color: var(--color-primary);
+//     --color: var(--color-primary);
+
+//     &:hover {
+//       --background: var(--color-primary);
+//       --color: white;
+//     }
+//   }
+// }
+
+// /* Inputs */
+// ion-input, ion-textarea {
+//   --background: var(--color-bg-primary);
+//   --color: var(--color-text-dark);
+//   --placeholder-color: var(--color-text-muted);
+//   border-radius: var(--border-radius-md);
+//   font-size: var(--font-size-md);
+// }
+
+// /* Selects */
+// ion-select {
+//   --background: var(--color-bg-primary) !important;
+//   --color: var(--color-text-dark) !important;
+//   --placeholder-color: var(--color-text-muted) !important;
+
+//   &::part(icon) {
+//     color: var(--color-primary) !important;
+//   }
+
+//   &::part(container) {
+//     background: var(--color-bg-primary) !important;
+//   }
+
+//   &::part(text) {
+//     color: var(--color-text-dark) !important;
+//   }
+// }
+
+// /* Searchbar */
+// ion-searchbar {
+//   --background: var(--color-bg-primary) !important;
+//   --color: var(--color-text-dark) !important;
+//   --icon-color: var(--color-primary);
+//   --placeholder-color: var(--color-text-muted);
+//   --box-shadow: var(--shadow-sm);
+//   --border-radius: var(--border-radius-md);
+// }
+
+// /* Segments */
+// ion-segment {
+//   --background: var(--color-bg-primary) !important;
+//   border-radius: var(--border-radius-md);
+//   box-shadow: var(--shadow-sm);
+// }
+
+// ion-segment-button {
+//   --color: var(--color-text-medium) !important;
+//   --color-checked: white !important;
+//   --background: transparent !important;
+//   --background-checked: var(--color-primary) !important;
+//   --border-radius: var(--border-radius-md);
+//   font-weight: var(--font-weight-medium);
+//   transition: all var(--transition-normal);
+
+//   &.segment-button-checked {
+//     box-shadow: var(--shadow-sm);
+//   }
+// }
+
+// /* Toolbar */
+// ion-toolbar {
+//   --background: var(--color-primary) !important;
+//   --color: white !important;
+
+//   ion-title {
+//     font-weight: var(--font-weight-semibold);
+//   }
+// }
+
+// /* Tab Bar */
+// ion-tab-bar {
+//   --background: var(--color-bg-primary) !important;
+//   --color: var(--color-text-muted) !important;
+//   border-top: 1px solid var(--color-bg-muted);
+//   box-shadow: var(--shadow-lg);
+// }
+
+// ion-tab-button {
+//   --color: var(--color-text-muted) !important;
+//   --color-selected: var(--color-primary) !important;
+// }
+
+// /* ========================================
+//    ACTION SHEETS Y DROPDOWNS
+//    ======================================== */
+// .action-sheet-md,
+// .action-sheet-ios {
+//   --background: var(--color-bg-primary) !important;
+//   --color: var(--color-text-dark) !important;
+
+//   .action-sheet-wrapper {
+//     background: var(--color-bg-primary) !important;
+//   }
+
+//   .action-sheet-container {
+//     background: var(--color-bg-primary) !important;
+//     border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+//   }
+
+//   .action-sheet-group {
+//     background: var(--color-bg-primary) !important;
+
+//     .action-sheet-title {
+//       color: var(--color-primary) !important;
+//       font-weight: var(--font-weight-semibold) !important;
+//       background: var(--color-bg-primary) !important;
+//     }
+
+//     .action-sheet-button {
+//       color: var(--color-text-dark) !important;
+//       background: var(--color-bg-primary) !important;
+//       transition: all var(--transition-fast);
+
+//       &:hover {
+//         background: var(--color-bg-light) !important;
+//       }
+
+//       &.action-sheet-destructive {
+//         color: var(--color-danger) !important;
+//       }
+
+//       &.action-sheet-selected {
+//         color: var(--color-primary) !important;
+//         font-weight: var(--font-weight-semibold) !important;
+//         background: rgba(105, 28, 50, 0.1) !important;
+//       }
+//     }
+
+//     .action-sheet-cancel {
+//       color: var(--color-text-medium) !important;
+//       background: var(--color-bg-primary) !important;
+//       border-top: 8px solid var(--color-bg-light) !important;
+//     }
+//   }
+// }
+
+// /* ========================================
+//    ALERTS
+//    ======================================== */
+// ion-alert {
+//   .alert-wrapper.sc-ion-alert-md {
+//     background-color: var(--color-bg-primary) !important;
+//     border-radius: var(--border-radius-lg);
+//     box-shadow: var(--shadow-xl);
+//   }
+
+//   .alert-title.sc-ion-alert-md {
+//     color: var(--color-primary) !important;
+//     font-weight: var(--font-weight-semibold);
+//   }
+
+//   .alert-message.sc-ion-alert-md {
+//     color: var(--color-text-dark) !important;
+//   }
+
+//   [aria-checked="true"].sc-ion-alert-md .alert-radio-icon.sc-ion-alert-md {
+//     border-color: var(--color-primary) !important;
+//   }
+
+//   .alert-radio-inner.sc-ion-alert-md {
+//     background-color: var(--color-primary) !important;
+//   }
+
+//   .alert-radio-label.sc-ion-alert-md {
+//     white-space: pre-line !important;
+//     color: var(--color-text-dark) !important;
+//   }
+
+//   .alert-tappable.sc-ion-alert-md {
+//     height: 60px !important;
+//   }
+
+//   [aria-checked="true"].sc-ion-alert-md .alert-radio-label.sc-ion-alert-md {
+//     color: var(--color-primary) !important;
+//     font-weight: var(--font-weight-semibold) !important;
+//   }
+
+//   .alert-button-inner.sc-ion-alert-md {
+//     color: var(--color-primary) !important;
+//     font-weight: var(--font-weight-semibold);
+//   }
+// }
+
+// /* ========================================
+//    POPOVERS
+//    ======================================== */
+// ion-popover {
+//   --background: var(--color-bg-primary) !important;
+//   --color: var(--color-text-dark) !important;
+
+//   .popover-content {
+//     background: var(--color-bg-primary) !important;
+//     color: var(--color-text-dark) !important;
+//     border-radius: var(--border-radius-lg);
+//     box-shadow: var(--shadow-lg);
+//   }
+
+//   ion-list {
+//     background: var(--color-bg-primary) !important;
+//   }
+
+//   ion-item {
+//     --background: var(--color-bg-primary) !important;
+//     --color: var(--color-text-dark) !important;
+
+//     ion-label {
+//       color: var(--color-text-dark) !important;
+//     }
+
+//     &:hover {
+//       --background: var(--color-bg-light) !important;
+//     }
+
+//     &.item-selected {
+//       --background: rgba(105, 28, 50, 0.1) !important;
+//       --color: var(--color-primary) !important;
+
+//       ion-label {
+//         color: var(--color-primary) !important;
+//         font-weight: var(--font-weight-semibold);
+//       }
+//     }
+//   }
+// }
+
+// /* ========================================
+//    LOADING SPINNER
+//    ======================================== */
+// .custom-loader-class {
+//   --ion-color-step-850: white;
+//   --spinner-color: var(--color-primary);
+// }
+
+// /* ========================================
+//    UTILIDADES GLOBALES
+//    ======================================== */
+
+// /* Text Utilities */
+// .text-primary { color: var(--color-primary) !important; }
+// .text-secondary { color: var(--color-secondary) !important; }
+// .text-dark { color: var(--color-text-dark) !important; }
+// .text-medium { color: var(--color-text-medium) !important; }
+// .text-light { color: var(--color-text-light) !important; }
+// .text-muted { color: var(--color-text-muted) !important; }
+
+// /* Background Utilities */
+// .bg-primary { background-color: var(--color-primary) !important; }
+// .bg-secondary { background-color: var(--color-secondary) !important; }
+// .bg-light { background-color: var(--color-bg-light) !important; }
+// .bg-white { background-color: var(--color-bg-primary) !important; }
+
+// /* Spacing Utilities */
+// .p-xs { padding: var(--spacing-xs) !important; }
+// .p-sm { padding: var(--spacing-sm) !important; }
+// .p-md { padding: var(--spacing-md) !important; }
+// .p-lg { padding: var(--spacing-lg) !important; }
+// .p-xl { padding: var(--spacing-xl) !important; }
+
+// .m-xs { margin: var(--spacing-xs) !important; }
+// .m-sm { margin: var(--spacing-sm) !important; }
+// .m-md { margin: var(--spacing-md) !important; }
+// .m-lg { margin: var(--spacing-lg) !important; }
+// .m-xl { margin: var(--spacing-xl) !important; }
+
+// /* Border Radius Utilities */
+// .rounded-sm { border-radius: var(--border-radius-sm) !important; }
+// .rounded-md { border-radius: var(--border-radius-md) !important; }
+// .rounded-lg { border-radius: var(--border-radius-lg) !important; }
+// .rounded-xl { border-radius: var(--border-radius-xl) !important; }
+// .rounded-full { border-radius: var(--border-radius-full) !important; }
+
+// /* Shadow Utilities */
+// .shadow-xs { box-shadow: var(--shadow-xs) !important; }
+// .shadow-sm { box-shadow: var(--shadow-sm) !important; }
+// .shadow-md { box-shadow: var(--shadow-md) !important; }
+// .shadow-lg { box-shadow: var(--shadow-lg) !important; }
+// .shadow-xl { box-shadow: var(--shadow-xl) !important; }
+
+// /* ========================================
+//    ANULAR DARK MODE COMPLETAMENTE
+//    ======================================== */
+// html.dark,
+// body.dark {
+//   --ion-background-color: var(--color-bg-primary) !important;
+//   --ion-text-color: var(--color-text-dark) !important;
+// }
+
+// @media (prefers-color-scheme: dark) {
+//   body {
+//     --ion-background-color: var(--color-bg-primary) !important;
+//     --ion-text-color: var(--color-text-dark) !important;
+//     --ion-item-background: var(--color-bg-primary) !important;
+//     --ion-card-background: var(--color-bg-primary) !important;
+//     --ion-toolbar-background: var(--color-primary) !important;
+//     --ion-tab-bar-background: var(--color-bg-primary) !important;
+//   }
+
+//   .action-sheet-md,
+//   .action-sheet-ios {
+//     --background: var(--color-bg-primary) !important;
+//     --color: var(--color-text-dark) !important;
+
+//     .action-sheet-button {
+//       color: var(--color-text-dark) !important;
+//       background: var(--color-bg-primary) !important;
+//     }
+//   }
+
+
+// }
+
+
+/* global.scss - ESTILOS GLOBALES PARA TAMAÑOS DE TEXTO (SIMPLIFICADO) */
+
+/* =================================== */
+/* VARIABLES CSS GLOBALES              */
+/* =================================== */
+
+:root {
+  /* Colores Principales */
+  --color-primary: #611232;
+  --color-secondary: #a57f2c;
+  --color-primary-light: #7a1640;
+  --color-secondary-light: #c39a3a;
+  --color-primary-dark: #4a0d25;
+  --color-secondary-dark: #8a681e;
+
+  /* Variables Ionic actualizadas */
+  --ion-color-primary: #611232;
+  --ion-color-primary-rgb: 97, 18, 50;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #4a0d25;
+  --ion-color-primary-tint: #7a1640;
+
+  --ion-color-secondary: #a57f2c;
+  --ion-color-secondary-rgb: 165, 127, 44;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #8a681e;
+  --ion-color-secondary-tint: #c39a3a;
+
+  /* Variables base para fuentes */
+  --base-font-size: 16px;
+  --small-font-size: 14px;
+  --large-font-size: 20px;
+  --xl-font-size: 24px;
+  --font-size-multiplier: 1;
+
+  /* Variables para espaciado dinámico */
+  --dynamic-padding: 12px;
+  --dynamic-margin: 8px;
+  --dynamic-line-height: 1.5;
+  --icon-size: 24px;
+
+  /* Variables para transiciones */
+  --font-transition-duration: 0.3s;
+  --font-transition-timing: ease-in-out;
+}
+
+/* =================================== */
+/* CLASES GLOBALES PARA TAMAÑOS       */
+/* =================================== */
+
+/* Tamaño Pequeño */
+.font-size-pequeño {
+  --base-font-size: 12px;
+  --small-font-size: 10px;
+  --large-font-size: 15px;
+  --xl-font-size: 18px;
+  --dynamic-padding: 8px;
+  --dynamic-margin: 4px;
+  --dynamic-line-height: 1.4;
+  --icon-size: 20px;
+
+  /* Aplicar a elementos de Ionic */
+  ion-title {
+    font-size: 16px !important;
+  }
+
+  ion-button {
+    --font-size: 12px;
+    --min-height: 36px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    border-radius: 15px;
+  }
+
+  ion-item {
+    --min-height: 40px;
+    font-size: 12px;
+  }
+
+  ion-label {
+    font-size: 12px !important;
+  }
+
+  ion-input {
+    --font-size: 12px !important;
+    --min-height: 36px;
+  }
+
+  ion-card-title {
+    font-size: 14px !important;
+  }
+
+  ion-card-subtitle {
+    font-size: 11px !important;
+  }
+
+  ion-note {
+    font-size: 10px !important;
+  }
+
+  ion-chip {
+    --font-size: 11px;
+    --height: 24px;
+  }
+
+  ion-searchbar {
+    --font-size: 12px;
+  }
+}
+
+/* Tamaño Normal */
+.font-size-normal {
+  --base-font-size: 16px;
+  --small-font-size: 14px;
+  --large-font-size: 20px;
+  --xl-font-size: 24px;
+  --dynamic-padding: 12px;
+  --dynamic-margin: 8px;
+  --dynamic-line-height: 1.5;
+  --icon-size: 24px;
+
+  /* Los valores por defecto ya están aplicados */
+}
+
+/* Tamaño Grande */
+.font-size-grande {
+  --base-font-size: 20px;
+  --small-font-size: 18px;
+  --large-font-size: 24px;
+  --xl-font-size: 28px;
+  --dynamic-padding: 16px;
+  --dynamic-margin: 12px;
+  --dynamic-line-height: 1.6;
+  --icon-size: 28px;
+
+  ion-title {
+    font-size: 22px !important;
+  }
+
+  ion-button {
+    --font-size: 18px;
+    --min-height: 48px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    border-radius: 15px;
+  }
+
+  ion-item {
+    --min-height: 52px;
+    font-size: 20px;
+  }
+
+  ion-label {
+    font-size: 20px !important;
+  }
+
+  ion-input {
+    --font-size: 20px !important;
+    --min-height: 52px;
+  }
+
+  ion-card-title {
+    font-size: 22px !important;
+  }
+
+  ion-card-subtitle {
+    font-size: 18px !important;
+  }
+
+  ion-note {
+    font-size: 18px !important;
+  }
+
+  ion-chip {
+    --font-size: 18px;
+    --height: 36px;
+  }
+
+  ion-searchbar {
+    --font-size: 18px;
+  }
+
+  ion-segment-button {
+    --font-size: 18px;
+  }
+}
+
+/* Tamaño Extra Grande */
+.font-size-extra-grande {
+  --base-font-size: 24px;
+  --small-font-size: 22px;
+  --large-font-size: 28px;
+  --xl-font-size: 32px;
+  --dynamic-padding: 20px;
+  --dynamic-margin: 16px;
+  --dynamic-line-height: 1.7;
+  --icon-size: 32px;
+
+  ion-title {
+    font-size: 26px !important;
+    font-weight: 600;
+  }
+
+  ion-button {
+    --font-size: 22px;
+    --min-height: 56px;
+    --padding-start: 24px;
+    --padding-end: 24px;
+  }
+
+  ion-item {
+    --min-height: 60px;
+    font-size: 24px;
+  }
+
+  ion-label {
+    font-size: 24px !important;
+  }
+
+  ion-input {
+    --font-size: 24px !important;
+    --min-height: 60px;
+  }
+
+  ion-card-title {
+    font-size: 26px !important;
+  }
+
+  ion-card-subtitle {
+    font-size: 22px !important;
+  }
+
+  ion-note {
+    font-size: 22px !important;
+  }
+
+  ion-chip {
+    --font-size: 20px;
+    --height: 40px;
+  }
+
+  ion-searchbar {
+    --font-size: 22px;
+  }
+
+  ion-segment-button {
+    --font-size: 20px;
+  }
+}
+
+/* =================================== */
+/* TRANSICIONES SUAVES                */
+/* =================================== */
+
+.font-transition,
+.font-transition * {
+  transition:
+    font-size var(--font-transition-duration) var(--font-transition-timing),
+    padding var(--font-transition-duration) var(--font-transition-timing),
+    margin var(--font-transition-duration) var(--font-transition-timing),
+    min-height var(--font-transition-duration) var(--font-transition-timing) !important;
+}
+
+/* =================================== */
+/* APLICACIÓN GLOBAL DE VARIABLES     */
+/* =================================== */
+
+/* Aplicar variables dinámicas a elementos comunes */
+ion-content {
+  --padding-start: var(--dynamic-padding);
+  --padding-end: var(--dynamic-padding);
+  --padding-top: var(--dynamic-padding);
+  --padding-bottom: var(--dynamic-padding);
+}
+
+ion-card {
+  margin: var(--dynamic-margin);
+}
+
+/* Iconos responsivos */
+ion-icon {
+  font-size: var(--icon-size) !important;
+}
+
+/* Texto base */
+p, span, div {
+  font-size: var(--base-font-size);
+  line-height: var(--dynamic-line-height);
+}
+
+h1 { font-size: var(--xl-font-size); }
+h2 { font-size: var(--large-font-size); }
+h3 { font-size: var(--base-font-size); }
+h4 { font-size: var(--base-font-size); }
+h5 { font-size: var(--small-font-size); }
+h6 { font-size: var(--small-font-size); }
+
+/* =================================== */
+/* ESTILOS ESPECÍFICOS PARA ACCESIBILIDAD */
+/* =================================== */
+
+/* Vista previa en alertas */
+.font-preview-alert {
+  .alert-wrapper {
+    max-width: 90%;
+    max-height: 80%;
+  }
+
+  .font-preview-container {
+    padding: 16px 0;
+
+    .font-preview-item {
+      margin: 12px 0;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+      background: #f8f9fa;
+
+      &.font-size-pequeño {
+        font-size: 12px !important;
+        background: #fff3cd;
+        border-color: #ffeaa7;
+      }
+
+      &.font-size-normal {
+        font-size: 16px !important;
+        background: #d1ecf1;
+        border-color: #bee5eb;
+      }
+
+      &.font-size-grande {
+        font-size: 20px !important;
+        background: #d4edda;
+        border-color: #c3e6cb;
+      }
+
+      &.font-size-extra-grande {
+        font-size: 24px !important;
+        background: #f8d7da;
+        border-color: #f5c6cb;
+      }
+
+      strong {
+        color: var(--ion-color-primary);
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+/* Action Sheet personalizado para tamaños */
+.action-sheet-selected {
+  .action-sheet-button-inner {
+    font-weight: 600;
+    color: var(--ion-color-primary) !important;
+  }
+}
+
+/* =================================== */
+/* RESPONSIVE DESIGN                   */
+/* =================================== */
+
+/* Tabletas */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .font-size-grande {
+    --base-font-size: 18px;
+    --xl-font-size: 26px;
+  }
+
+  .font-size-extra-grande {
+    --base-font-size: 22px;
+    --xl-font-size: 30px;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 576px) {
+  .font-size-grande {
+    --base-font-size: 18px;
+    --xl-font-size: 24px;
+    --dynamic-padding: 14px;
+  }
+
+  .font-size-extra-grande {
+    --base-font-size: 20px;
+    --xl-font-size: 28px;
+    --dynamic-padding: 18px;
+  }
+}
+
+/* Móviles muy pequeños */
+@media (max-width: 480px) {
+  .font-size-extra-grande {
+    --base-font-size: 18px;
+    --xl-font-size: 24px;
+    --dynamic-padding: 16px;
+  }
+}
+
+/* =================================== */
+/* APLICAR A PÁGINAS ESPECÍFICAS      */
+/* =================================== */
+
+/* Asuntos Relevantes */
+.asunto-titulo {
+  font-size: var(--large-font-size) !important;
+}
+
+.asunto-descripcion {
+  font-size: var(--base-font-size) !important;
+  line-height: var(--dynamic-line-height) !important;
+}
+
+.asunto-meta {
+  font-size: var(--small-font-size) !important;
+}
+
+/* Footer Menu */
+.footer-menu {
+  ion-tab-button {
+    --font-size: var(--small-font-size);
+
+    ion-icon {
+      font-size: calc(var(--icon-size) * 1.1) !important;
+    }
+  }
+}
+
+/* Headers */
+.header-title {
+  font-size: var(--large-font-size) !important;
+  font-weight: 600;
+}
+
+/* =================================== */
+/* UTILIDADES DE DEBUG (DESARROLLO)   */
+/* =================================== */
+
+/* Solo para desarrollo - mostrar información de debug */
+body.debug-fonts::after {
+  content: "Tamaño: " attr(class);
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 9999;
+  pointer-events: none;
+}

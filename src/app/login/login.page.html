@@ -1,0 +1,99 @@
+<ion-content [fullscreen]="true">
+  <!-- <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Login Content</ion-title>
+    </ion-toolbar>
+  </ion-header> -->
+
+
+    <div class="contaier-login">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <img src="assets/logo.png" alt="" width="340px" />
+            <h2 class="login-title">
+              Iniciar Sesión
+            </h2>
+            <p class="login-subtitle">
+              Para iniciar sesión ingrese su usuario y contraseña.
+            </p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <form
+              #formularioIniciarsesion="ngForm"
+              (ngSubmit)="login()"
+              autocomplete="off"
+              id="#form"
+            >
+              <ion-item>
+                <ion-icon
+                  name="mail-outline"
+                  class="icon-login"
+                ></ion-icon>
+                <ion-input
+                  type="text"
+                  [(ngModel)]="usuario.username"
+                  name="correo"
+                  required
+                  maxlength="60"
+                  placeholder=" Usuario"
+                >
+                </ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-icon
+                  style="color: #121212"
+                  name="bag-check-outline"
+                  class="icon-login"
+                ></ion-icon>
+                <ion-input
+                  [type]="passwordType"
+                  [(ngModel)]="usuario.password"
+                  name="Password"
+                  required
+                  maxlength="11"
+                  placeholder=" Contraseña"
+                >
+                </ion-input>
+
+                <ion-icon
+                  [name]="passwordShown === true ? 'eye' : 'eye-off-outline' "
+                  [color]="passwordShown === true ? '#121212' : '#121212' "
+                  item-end
+                  (click)="togglePassword()"
+                >
+                </ion-icon>
+              </ion-item>
+              <!-- <div>
+                <a [routerLink]="['/olvide-contrasena']" style="color: #121212"
+                  >¿Olvidó su contraseña?</a
+                >
+              </div> -->
+            </form>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-button
+              type="submit"
+              fill="solid"
+              expand="block"
+              (click)="validarCampos()"
+            >
+              Ingresar
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <br />
+        <br />
+        <br />
+        <div>
+          <a style="color: #121212">Ver. {{versionApp}}</a>
+        </div>
+      </ion-grid>
+    </div>
+</ion-content>

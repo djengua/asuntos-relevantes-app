@@ -1,0 +1,161 @@
+<!-- perfil.page.html - MEJORAS PARA TAMAÑO DE TEXTO -->
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()" color="light">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="header-title">Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="perfil-content">
+  <div class="content-wrapper">
+
+    <!-- Sección de información del usuario -->
+    <div class="perfil-header">
+      <p class="usuario-cargo">Información del usuario.</p>
+    </div>
+
+    <!-- Formulario de información personal -->
+    <ion-card class="info-card">
+      <ion-card-content>
+
+        <!-- Username (no editable) -->
+        <div class="form-field">
+          <ion-label class="field-label">Usuario</ion-label>
+          <div class="field-display readonly">
+            <span class="field-value">{{usuario.username}}</span>
+          </div>
+        </div>
+
+        <!-- Nombre -->
+        <div class="form-field">
+          <ion-label class="field-label">Nombre</ion-label>
+          <div class="field-display readonly">
+            <span class="field-value">{{usuario.nombre}}</span>
+          </div>
+          <ion-input
+            *ngIf="modoEdicion"
+            [(ngModel)]="usuarioEditado.nombre"
+            placeholder="Ingresa tu nombre"
+            class="field-input"
+            fill="outline">
+          </ion-input>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+
+
+
+    <!-- Cambiar contraseña -->
+    <ion-card class="security-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          Seguridad
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        <!-- Sección de cambio de contraseña -->
+        <div class="password-section">
+          <div class="config-item" (click)="mostrarCambioPassword()" *ngIf="!mostrandoCambioPassword">
+            <div class="config-info">
+              <ion-label class="config-label">Cambiar contraseña</ion-label>
+              <ion-note class="config-note">Actualiza tu contraseña de acceso</ion-note>
+            </div>
+            <ion-icon name="chevron-forward-outline" class="config-arrow"></ion-icon>
+          </div>
+
+          <!-- Formulario de cambio de contraseña -->
+          <div class="password-form" *ngIf="mostrandoCambioPassword">
+            <div class="form-field">
+              <ion-label class="field-label">Contraseña actual</ion-label>
+              <ion-input
+                [(ngModel)]="passwordActual"
+                type="password"
+                placeholder="Ingresa tu contraseña actual"
+                class="field-input"
+                fill="outline">
+              </ion-input>
+            </div>
+
+            <div class="form-field">
+              <ion-label class="field-label">Nueva contraseña</ion-label>
+              <ion-input
+                [(ngModel)]="passwordNueva"
+                type="password"
+                placeholder="Ingresa tu nueva contraseña"
+                class="field-input"
+                fill="outline">
+              </ion-input>
+            </div>
+
+            <div class="form-field">
+              <ion-label class="field-label">Confirmar nueva contraseña</ion-label>
+              <ion-input
+                [(ngModel)]="passwordConfirmar"
+                type="password"
+                placeholder="Confirma tu nueva contraseña"
+                class="field-input"
+                fill="outline">
+              </ion-input>
+            </div>
+
+            <div class="form-actions">
+              <ion-button
+                (click)="ocultarCambioPassword()"
+                fill="outline"
+                color="medium"
+                expand="block">
+                Cancelar
+              </ion-button>
+              <ion-button
+                (click)="cambiarContrasena()"
+                expand="block"
+                color="primary"
+                [disabled]="!passwordActual || !passwordNueva || !passwordConfirmar">
+                Cambiar contraseña
+              </ion-button>
+            </div>
+          </div>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Acciones adicionales -->
+    <ion-card class="actions-card">
+      <ion-card-content>
+
+        <!-- Cerrar sesión -->
+        <div class="config-item danger-item" (click)="mostrarConfirmacionCerrarSesion()">
+          <div class="config-info">
+            <ion-label class="config-label danger-label">Cerrar sesión</ion-label>
+            <ion-note class="config-note">Salir de la aplicación</ion-note>
+          </div>
+          <ion-icon name="log-out-outline" class="config-arrow danger-icon"></ion-icon>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Información adicional -->
+    <div class="app-info">
+      <p class="info-text">
+        <ion-icon name="calendar-outline"></ion-icon>
+        Miembro desde {{usuario.fechaRegistro | date:'MMMM yyyy'}}
+      </p>
+      <p class="info-text version">
+        Versión 1.0.0
+      </p>
+    </div>
+
+    <!-- Espaciado para el footer -->
+    <div class="bottom-spacing"></div>
+
+  </div>
+</ion-content>

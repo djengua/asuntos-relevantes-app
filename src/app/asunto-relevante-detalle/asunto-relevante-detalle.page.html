@@ -1,0 +1,209 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()" color="light">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title class="header-title">Detalle</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="mostrarOpcionesCompartir()" color="light">
+        <ion-icon name="share-outline"></ion-icon>
+      </ion-button>
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="detalle-content">
+  <!-- Refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="recargarAsunto($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Arrastra para actualizar"
+      refreshingSpinner="circular"
+      refreshingText="Actualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Estado de carga -->
+  <div *ngIf="cargando" class="loading-state">
+    <div class="loading-container">
+      <ion-spinner name="circular" color="primary"></ion-spinner>
+      <p>Cargando detalle del asunto...</p>
+    </div>
+  </div>
+
+  <!-- Estado de error -->
+  <div *ngIf="error && !asunto" class="error-state">
+    <ion-icon name="alert-circle-outline" color="danger" size="large"></ion-icon>
+    <h3>Error al cargar</h3>
+    <p>{{ error }}</p>
+    <ion-button (click)="recargarAsunto()" color="primary" fill="outline">
+      <ion-icon name="refresh-outline" slot="start"></ion-icon>
+      Reintentar
+    </ion-button>
+    <ion-button (click)="volver()" color="medium" fill="clear">
+      <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+      Volver
+    </ion-button>
+  </div>
+
+  <!-- Contenido del detalle -->
+  <div *ngIf="!cargando && asunto" class="detalle-container">
+
+    <!-- Header del asunto -->
+    <ion-card class="asunto-header-card">
+      <ion-card-header>
+        <div class="header-content">
+          <div class="titulo-section">
+            <ion-card-title class="asunto-titulo">{{ asunto.titulo }}</ion-card-title>
+            <div class="badges-section">
+              <ion-chip [color]="getColorSemaforo()" class="semaforo-chip">
+                <ion-icon name="flag-outline"></ion-icon>
+                <ion-label>{{ asunto.semaforo | titlecase }}</ion-label>
+              </ion-chip>
+
+              <ion-chip *ngIf="asunto.destacado" color="warning" outline>
+                <ion-icon name="star-outline"></ion-icon>
+                <ion-label>Destacado</ion-label>
+              </ion-chip>
+
+              <ion-chip *ngIf="asunto.resuelto" color="success" outline>
+                <ion-icon name="checkmark-circle-outline"></ion-icon>
+                <ion-label>Resuelto</ion-label>
+              </ion-chip>
+            </div>
+          </div>
+        </div>
+      </ion-card-header>
+    </ion-card>
+
+    <!-- Información principal -->
+    <ion-card class="info-principal-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="information-circle-outline"></ion-icon>
+          Información Principal
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="info-grid">
+          <div class="info-item">
+            <ion-icon name="location-outline" color="primary"></ion-icon>
+            <div class="info-content">
+              <label>Ubicación</label>
+              <span>{{ asunto.estado }}{{ asunto.localidad ? ', ' + asunto.localidad : '' }}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <ion-icon name="calendar-outline" color="primary"></ion-icon>
+            <div class="info-content">
+              <label>Fecha del evento</label>
+              <span>{{ formatearFecha(asunto.fechaEvento) }}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <ion-icon name="folder-outline" color="primary"></ion-icon>
+            <div class="info-content">
+              <label>Categoría</label>
+              <span>{{ asunto.categoria }}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <ion-icon name="school-outline" color="primary"></ion-icon>
+            <div class="info-content">
+              <label>Nivel Educativo</label>
+              <span>{{ asunto.nivelEducativo }}</span>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Descripción -->
+    <ion-card class="descripcion-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="document-text-outline"></ion-icon>
+          Descripción
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p class="descripcion-texto">{{ asunto.descripcion }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Concentrado de prensa (si existe) -->
+    <ion-card *ngIf="tieneConcentradoPrensa()" class="prensa-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="newspaper-outline"></ion-icon>
+          Concentrado de Prensa
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div *ngIf="asunto.concentradoPrensa" class="prensa-content">
+          <div *ngIf="asunto.concentradoPrensa.encabezado" class="prensa-item">
+            <label>Encabezado:</label>
+            <p>{{ asunto.concentradoPrensa.encabezado }}</p>
+          </div>
+
+          <div *ngIf="asunto.concentradoPrensa.extracto" class="prensa-item">
+            <label>Extracto:</label>
+            <p>{{ asunto.concentradoPrensa.extracto }}</p>
+          </div>
+
+          <div *ngIf="asunto.concentradoPrensa.fechaPublicacion" class="prensa-item">
+            <label>Fecha de Publicación:</label>
+            <p>{{ formatearFecha(asunto.concentradoPrensa.fechaPublicacion) }}</p>
+          </div>
+
+          <div *ngIf="asunto.concentradoPrensa.urlFuente" class="prensa-item">
+            <ion-button (click)="abrirUrlFuente()" fill="outline" color="primary">
+              <ion-icon name="open-outline" slot="start"></ion-icon>
+              Ver fuente original
+            </ion-button>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Enlace a fuente (si no hay concentrado de prensa) -->
+    <ion-card *ngIf="!tieneConcentradoPrensa() && asunto.url" class="fuente-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="link-outline"></ion-icon>
+          Fuente
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-button (click)="abrirUrlFuente()" fill="outline" color="primary" expand="block">
+          <ion-icon name="open-outline" slot="start"></ion-icon>
+          Ver fuente original
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button (click)="mostrarOpcionesCompartir()" fill="outline" color="primary">
+      <ion-icon name="share-outline" slot="start"></ion-icon>
+      Compartir
+    </ion-button>
+    <div class="bottom-spacing"></div>
+        <div class="bottom-spacing"></div>
+
+    <!-- Acciones -->
+    <ion-card class="acciones-card">
+      <ion-card-content>
+
+        <div class="bottom-spacing"></div>
+        <div class="bottom-spacing"></div>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>

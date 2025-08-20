@@ -1,0 +1,251 @@
+/* ========================================
+   ESTILOS LOGIN
+   ======================================== */
+
+:host {
+  --color-primary: #611232;
+  --color-secondary: #a57f2c;
+  --color-primary-light: #7a1640;
+  --color-secondary-light: #c39a3a;
+  --color-primary-dark: #4a0d25;
+  --color-secondary-dark: #8a681e;
+  --color-text-dark: #121212;
+  --color-text-medium: #666666;
+  --color-text-light: #999999;
+  --login-bg: #ffffff;
+}
+
+/* ========================================
+   CONTENT PRINCIPAL
+   ======================================== */
+
+ion-content {
+  --background: var(--login-bg);
+  --color: var(--color-text-dark);
+}
+
+.contaier-login {
+  background-color: #ffffff;
+  padding: 2rem 1.5rem;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-grid {
+    max-width: 400px;
+    width: 100%;
+  }
+}
+
+/* ========================================
+   LOGO Y TEXTOS
+   ======================================== */
+
+img {
+  display: block;
+  margin: 0 auto 2rem auto;
+}
+
+.login-title {
+  color: var(--color-primary) !important;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin: 1.5rem 0 1rem 0;
+  text-align: center;
+}
+
+.login-subtitle {
+  color: var(--color-text-medium) !important;
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 1rem 0 2rem 0;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ========================================
+   FORMULARIO
+   ======================================== */
+
+form {
+  margin-bottom: 2rem;
+}
+
+ion-item {
+  --background: transparent;
+  --border-color: #e0e0e0;
+  --border-radius: 12px;
+  --border-width: 1px;
+  --border-style: solid;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 56px;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+
+  &:focus-within {
+    --border-color: var(--color-primary);
+    --border-width: 1px;
+  }
+}
+
+.icon-login {
+  color: var(--color-primary) !important;
+  font-size: 1.3rem;
+  margin-right: 12px;
+}
+
+ion-input {
+  --color: var(--color-text-dark);
+  --placeholder-color: var(--color-text-light);
+  font-size: 1rem;
+
+  &::part(native) {
+    padding-left: 0 !important;
+  }
+}
+
+.password-toggle-icon {
+  color: var(--color-text-medium) !important;
+  font-size: 1.2rem;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-primary) !important;
+  }
+}
+
+/* ========================================
+   BOT�N DE LOGIN
+   ======================================== */
+
+.login-button {
+  --background: var(--color-primary);
+  --background-hover: var(--color-primary-light);
+  --background-focused: var(--color-primary-dark);
+  --color: #ffffff;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(97, 18, 50, 0.3);
+  --ripple-color: rgba(255, 255, 255, 0.3);
+  height: 56px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+
+  &:hover:not([disabled]) {
+    --background: var(--color-primary-light);
+    transform: translateY(-1px);
+    --box-shadow: 0 6px 16px rgba(97, 18, 50, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &[disabled] {
+    --background: #cccccc;
+    --color: #666666;
+    --box-shadow: none;
+  }
+}
+
+/* ========================================
+   VERSI�N
+   ======================================== */
+
+.version-text {
+  color: var(--color-text-light) !important;
+  font-size: 0.85rem;
+  text-align: center;
+  display: block;
+  margin-top: 2rem;
+  text-decoration: none;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+  .contaier-login {
+    padding: 1rem;
+  }
+
+  img {
+    width: 100px;
+  }
+
+  .login-title {
+    font-size: 1.3rem;
+  }
+
+  .login-subtitle {
+    font-size: 0.9rem;
+  }
+
+  ion-item {
+    --min-height: 52px;
+  }
+
+  .login-button {
+    height: 52px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contaier-login {
+    padding: 0.5rem;
+  }
+
+  ion-grid {
+    padding: 0;
+  }
+
+  img {
+    width: 380px;
+    margin-bottom: 1.5rem;
+  }
+
+  .login-title {
+    font-size: 1.2rem;
+    margin: 1rem 0 0.5rem 0;
+  }
+
+  .login-subtitle {
+    font-size: 0.85rem;
+    margin: 0.5rem 0 1.5rem 0;
+  }
+}
+
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.contaier-login {
+  animation: fadeIn 0.6s ease-out;
+
+  ion-item {
+    transition: all 0.3s ease;
+  }
+
+  .login-button {
+    transition: all 0.3s ease;
+  }
+
+  .password-toggle-icon {
+    transition: color 0.3s ease;
+  }
+}

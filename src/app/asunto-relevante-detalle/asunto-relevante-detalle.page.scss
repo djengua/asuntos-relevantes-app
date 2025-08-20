@@ -1,0 +1,521 @@
+/* ========================================
+   ESTILOS ASUNTO RELEVANTE DETALLE
+   ======================================== */
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  // Variables unificadas
+  --color-primary: #611232;
+  --color-secondary: #a57f2c;
+  --color-primary-light: #7a1640;
+  --color-secondary-light: #c39a3a;
+  --color-primary-dark: #4a0d25;
+  --color-secondary-dark: #8a681e;
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8f9fa;
+  --color-text-dark: #212529;
+  --color-text-medium: #6c757d;
+  --color-text-muted: #adb5bd;
+  --spacing-md: 16px;
+  --border-radius-md: 8px;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+
+  // Variables específicas del detalle
+  --detalle-text-primary: #1a1a1a !important;
+  --detalle-text-secondary: #4a5568 !important;
+  --detalle-text-medium: #718096 !important;
+  --detalle-text-muted: #a0aec0 !important;
+  --detalle-bg-primary: #ffffff !important;
+  --detalle-bg-secondary: #f7fafc !important;
+  --detalle-bg-light: #edf2f7 !important;
+  --detalle-border: #e2e8f0 !important;
+  --detalle-spacing: 16px;
+  --detalle-card-radius: 12px;
+  --detalle-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --detalle-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --semaforo-verde: #22c55e;
+  --semaforo-amarillo: #fbbf24;
+  --semaforo-rojo: #ef4444;
+  --prensa-bg: #e8f4fd;
+  --prensa-border: #3b82f6;
+  --prensa-text: #1e40af;
+}
+
+/* ========================================
+   HEADER PERSONALIZADO
+   ======================================== */
+
+ion-header {
+  &.ion-no-border {
+    --border-width: 0;
+
+    ion-toolbar {
+      --background: var(--color-primary);
+      --color: #ffffff;
+      --min-height: 56px;
+      padding: 8px 0;
+
+      .header-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #ffffff;
+        text-align: center;
+      }
+
+      ion-buttons {
+        ion-button {
+          --color: #ffffff;
+          --background: transparent;
+          --border-radius: 8px;
+          --padding-start: 8px;
+          --padding-end: 8px;
+          margin: 0 4px;
+
+          &:hover {
+            --background: rgba(255, 255, 255, 0.1);
+          }
+
+          ion-icon {
+            font-size: 1.3rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ========================================
+   CONTENT PRINCIPAL
+   ======================================== */
+
+.detalle-content {
+  --background: var(--detalle-bg-secondary);
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+/* ========================================
+   ESTADOS DE LA APLICACIÓN
+   ======================================== */
+
+.loading-state, .error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  padding: var(--detalle-spacing);
+  text-align: center;
+
+  ion-icon {
+    margin-bottom: 16px;
+    font-size: 4rem;
+  }
+
+  h3 {
+    color: var(--detalle-text-primary);
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    color: var(--detalle-text-medium);
+    font-size: 1rem;
+    margin: 0 0 24px 0;
+    max-width: 300px;
+    line-height: 1.5;
+  }
+
+  ion-button {
+    --border-radius: 8px;
+    margin: 8px;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  ion-spinner {
+    --color: var(--color-primary);
+    transform: scale(1.2);
+  }
+
+  p {
+    color: var(--detalle-text-medium);
+    font-size: 0.95rem;
+    margin: 0;
+  }
+}
+
+/* ========================================
+   CONTAINER DEL DETALLE
+   ======================================== */
+
+.detalle-container {
+  padding: var(--detalle-spacing);
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 100%;
+
+  // Asegurar que el contenido tenga suficiente espacio al final
+  padding-bottom: calc(var(--detalle-spacing) + 20px);
+}
+
+/* ========================================
+   CARDS DEL DETALLE
+   ======================================== */
+
+ion-card {
+  --background: var(--detalle-bg-primary);
+  --border-radius: var(--detalle-card-radius);
+  --box-shadow: var(--detalle-shadow);
+  margin-bottom: var(--detalle-spacing);
+  border: none;
+
+  ion-card-header {
+    padding-bottom: 8px;
+
+    ion-card-title {
+      color: var(--detalle-text-primary) !important;
+      font-size: 1.1rem !important;
+      font-weight: 600 !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+
+      ion-icon {
+        font-size: 1.2rem;
+        color: var(--color-primary);
+      }
+    }
+  }
+
+  ion-card-content {
+    color: var(--detalle-text-secondary);
+    line-height: 1.6;
+  }
+}
+
+/* ========================================
+   HEADER DEL ASUNTO
+   ======================================== */
+
+.asunto-header-card {
+  --background: linear-gradient(135deg, var(--detalle-bg-primary) 0%, var(--detalle-bg-light) 100%);
+
+  .header-content {
+    .titulo-section {
+      .asunto-titulo {
+        color: var(--detalle-text-primary) !important;
+        font-size: 1.4rem !important;
+        font-weight: 700 !important;
+        line-height: 1.3 !important;
+        margin-bottom: 12px !important;
+      }
+
+      .badges-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+
+        ion-chip {
+          --background: var(--detalle-bg-light);
+          font-size: 0.8rem;
+          font-weight: 600;
+          height: 28px;
+
+          &.semaforo-chip {
+            &[color="success"] {
+              --background: var(--semaforo-verde);
+              --color: #ffffff;
+            }
+
+            &[color="warning"] {
+              --background: var(--semaforo-amarillo);
+              --color: #ffffff;
+            }
+
+            &[color="danger"] {
+              --background: var(--semaforo-rojo);
+              --color: #ffffff;
+            }
+          }
+
+          ion-icon {
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ========================================
+   INFORMACIÓN PRINCIPAL
+   ======================================== */
+
+.info-grid {
+  display: grid;
+  gap: 16px;
+
+  .info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    background: var(--detalle-bg-light);
+    border-radius: 8px;
+
+    ion-icon {
+      font-size: 1.3rem;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .info-content {
+      flex: 1;
+
+      label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--detalle-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+      }
+
+      span {
+        color: var(--detalle-text-primary);
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+/* ========================================
+   DESCRIPCIÓN
+   ======================================== */
+
+.descripcion-card {
+  .descripcion-texto {
+    color: var(--detalle-text-secondary) !important;
+    font-size: 1rem !important;
+    line-height: 1.7 !important;
+    margin: 0 !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* ========================================
+   CONCENTRADO DE PRENSA
+   ======================================== */
+
+.prensa-card {
+  --background: var(--prensa-bg);
+  border: 1px solid var(--prensa-border);
+
+  ion-card-header {
+    ion-card-title {
+      color: var(--prensa-text) !important;
+
+      ion-icon {
+        color: var(--prensa-border) !important;
+      }
+    }
+  }
+
+  .prensa-content {
+    .prensa-item {
+      margin-bottom: 16px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--prensa-text);
+        margin-bottom: 4px;
+      }
+
+      p {
+        color: var(--detalle-text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      ion-button {
+        --border-color: var(--prensa-border);
+        --color: var(--prensa-text);
+        margin-top: 8px;
+      }
+    }
+  }
+}
+
+/* ========================================
+   FUENTE
+   ======================================== */
+
+.fuente-card {
+  ion-button {
+    --border-radius: 8px;
+    font-weight: 500;
+  }
+}
+
+/* ========================================
+   ACCIONES
+   ======================================== */
+
+.acciones-card {
+  --background: var(--detalle-bg-light);
+  margin-bottom: 50px;
+
+  .acciones-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+
+    ion-button {
+      --border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+/* ========================================
+   REFRESHER PERSONALIZADO
+   ======================================== */
+
+ion-refresher {
+  ion-refresher-content {
+    --color: var(--color-primary);
+
+    .refresher-pulling-text,
+    .refresher-refreshing-text {
+      color: var(--detalle-text-medium);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+  .detalle-container {
+    padding: 12px;
+  }
+
+  .info-grid {
+    gap: 12px;
+
+    .info-item {
+      padding: 10px;
+
+      .info-content {
+        label {
+          font-size: 0.75rem;
+        }
+
+        span {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+
+  .acciones-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .asunto-header-card {
+    .header-content {
+      .titulo-section {
+        .asunto-titulo {
+          font-size: 1.2rem !important;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .detalle-container {
+    padding: 24px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+ion-card {
+  animation: fadeIn 0.4s ease-out;
+
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.2s; }
+  &:nth-child(3) { animation-delay: 0.3s; }
+  &:nth-child(4) { animation-delay: 0.4s; }
+  &:nth-child(5) { animation-delay: 0.5s; }
+}
+
+.loading-state,
+.error-state {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ========================================
+   UTILIDADES
+   ======================================== */
+
+.text-center { text-align: center !important; }
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.m-0 { margin: 0 !important; }
+.mb-2 { margin-bottom: 8px !important; }
+.mb-3 { margin-bottom: 12px !important; }
+
+.p-0 { padding: 0 !important; }
+.p-2 { padding: 8px !important; }
+.p-3 { padding: 12px !important; }
