@@ -31,7 +31,8 @@ import { onError } from '@apollo/client/link/error';
 export class AppModule {
   constructor(apollo: Apollo, httpLink: HttpLink) {
     // Configurar Apollo aquí
-    const httpUri = 'http://localhost:5008/graphql'; // Usar URL completa
+    // const httpUri = 'http://qa.api.siprared.sep.gob.mx/graphql'; // Usar URL completa
+    const httpUri = 'http://10.3.12.168:5008/graphql'; // Usar URL completa
 
     const authLink = setContext(async (_, { headers }) => {
       const token = localStorage.getItem('token');

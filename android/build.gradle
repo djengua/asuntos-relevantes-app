@@ -27,3 +27,32 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+
+subprojects { proj ->
+  afterEvaluate {
+    // Forzar Java 17 en todos los módulos Android (app y libs)
+    if (proj.extensions.findByName("android")) {
+      proj.android {
+        compileOptions {
+          sourceCompatibility JavaVersion.VERSION_17
+          targetCompatibility JavaVersion.VERSION_17
+        }
+      }
+    }
+  }
+
+  // Si algún módulo usa Kotlin, asegurar 17 también
+  plugins.withId("org.jetbrains.kotlin.android") {
+    try {
+      // Kotlin 2.x
+      proj.extensions.getByType(org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension).jvmToolchain(17)
+    } catch (ignored) {
+      // Kotlin 1.x
+      if (proj.hasProperty("kotlinOptions")) {
+        proj.kotlinOptions { jvmTarget = "17" }
+      }
+    }
+  }
+}
+

@@ -12,6 +12,7 @@ import { ApiService } from 'src/services/ApiService';
 })
 export class LoginPage implements OnInit {
   versionApp: string;
+  errorMsg: string;
   passwordType: string;
   passwordShown: boolean;
   passworIcon: string;
@@ -27,6 +28,7 @@ export class LoginPage implements OnInit {
     public loadingController: LoadingController
   ) {
     this.versionApp = '1.0.0';
+    this.errorMsg = '<>';
     this.passwordType = 'password';
     this.passwordShown = false;
     this.passworIcon = '';
@@ -74,6 +76,7 @@ export class LoginPage implements OnInit {
           }
         },
         error: (error: any) => {
+          this.errorMsg = error;
           console.error('Error en login:', error);
           this.loadingController.dismiss();
           localStorage.clear();

@@ -22,6 +22,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 }
 
 repositories {
@@ -51,4 +55,34 @@ try {
     }
 } catch(Exception e) {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}
+
+subprojects { proj ->
+  afterEvaluate {
+    // Para todos los módulos Android (app y libs)
+    if (proj.extensions.findByName("android")) {
+      proj.android {
+        compileOptions {
+          sourceCompatibility JavaVersion.VERSION_17
+          targetCompatibility JavaVersion.VERSION_17
+        }
+      }
+    }
+    // Fallback extra: fija --release 17 en cualquier tarea Java
+    tasks.withType(JavaCompile).configureEach {
+      options.release = 17
+    }
+  }
+
+  // Si hay Kotlin en algún módulo
+  plugins.withId("org.jetbrains.kotlin.android") {
+    // jvmTarget a 17 (para Kotlin <= 1.9.x)
+    if (proj.hasProperty("kotlinOptions")) {
+      proj.kotlinOptions { jvmTarget = "17" }
+    }
+    // Toolchain 17 (para Kotlin 2.x)
+    try {
+      proj.extensions.getByType(org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension).jvmToolchain(17)
+    } catch (ignored) { }
+  }
 }
